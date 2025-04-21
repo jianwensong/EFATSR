@@ -1,0 +1,50 @@
+# general settings
+name: EFATSR_x3
+model_type: ImageRestorationModel
+scale: 3
+num_gpu: 1 # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+  test0:
+    name: Urban100
+    type: PairedImageDatasetTest
+    dataroot_gt: datasets/SISR/test/Urban100/HR
+    dataroot_lq: datasets/SISR/test/Urban100/LR/X3
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: EFATSR
+  up_scale: 3
+  dim: 60
+  groups: 5
+  num: 4
+
+# path
+path:
+  pretrain_network_g: experiments/pretrained_models/EFATSR_x3.pth
+  strict_load_g: true
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  grids: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 3
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 3
+      test_y_channel: true
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

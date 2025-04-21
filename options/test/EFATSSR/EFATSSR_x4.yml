@@ -1,0 +1,68 @@
+name: EFATSSR_x4
+model_type: ImageRestorationModel
+scale: 4
+num_gpu: 1 # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+  test0:
+    name: KITTI2012
+    type: PairedImageSRLRDataset
+    dataroot_gt: datasets/STSR/test/KITTI2012/hr
+    dataroot_lq: datasets/STSR/test/KITTI2012/lr_x4
+    io_backend:
+      type: disk
+  test0:
+    name: KITTI2015
+    type: PairedImageSRLRDataset
+    dataroot_gt: datasets/STSR/test/KITTI2015/hr
+    dataroot_lq: datasets/STSR/test/KITTI2015/lr_x4
+    io_backend:
+      type: disk
+  test0:
+    name: Middlebury
+    type: PairedImageSRLRDataset
+    dataroot_gt: datasets/STSR/test/Middlebury/hr
+    dataroot_lq: datasets/STSR/test/Middlebury/lr_x4
+    io_backend:
+      type: disk
+  test0:
+    name: Flickr1024
+    type: PairedImageSRLRDataset
+    dataroot_gt: datasets/STSR/test/Flickr1024/hr
+    dataroot_lq: datasets/STSR/test/Flickr1024/lr_x4
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: EFATSSR
+  up_scale: 4
+  dim: 64
+  groups: 6
+  num: 5
+
+# path
+path:
+  pretrain_network_g: experiments/pretrained_models/EFATSSR_x4.pth
+  strict_load_g: true
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  grids: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_skimage_ssim
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
