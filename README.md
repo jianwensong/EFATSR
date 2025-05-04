@@ -61,3 +61,11 @@ python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr
 #scale factor 4
 python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt options/test/EFATSSR/EFATSSR_x4.yml --launcher pytorch
 ```
+## Citation
+```
+@article{song2025efficient,
+  title = {Efficient frequency feature aggregation transformer for image super-resolution},
+  author={Song, Jianwen and Sowmya, Arcot and Sun, Changming},
+  journal = {Pattern Recognition},
+  year = {2025}
+```
